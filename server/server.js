@@ -48,6 +48,8 @@ app.get('/todos/:id', (req, res) => {
         res.send({ todo });
     }).catch(e => {
         res.status(400).send(); // send empty body back because it may containt private info
+        // looks like we shouldn't send back the error when we do something
+        // with existing item (id)
     });
 });
 
@@ -66,7 +68,7 @@ app.delete('/todos/:id', (req, res) => {
         res.send({ todo });
     })
         .catch((e) => {
-            res.status(400).send()
+            res.status(400).send();
         });
 
 });
@@ -96,6 +98,19 @@ app.patch('/todos/:id', (req, res) => {
         }).catch((e) => {
             res.status(400).send();
         })
+});
+
+app.post('/users', (req, res) => {
+    var body = _.pick(req.body, ['email', 'password']);
+    var user = new User(body);
+
+    user.save().then(() => {
+        return user.generateAuthToken();
+    }).then((token) => {
+        res.header('x-auth', token).send(user);
+    }).catch((e) => {
+        res.status(400).send(e);
+    });
 });
 
 app.listen(port, () => {
