@@ -5,7 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { ObjectID } = require('mongodb');
 
-var { mongoose } = require('./db/mongoose');
+var { mongoose } = require('./db/mongoose'); // just to connect to mongodb
 var { Todo } = require('./models/todo');
 var { User } = require('./models/user');
 var { authenticate } = require('./middleware/authenticate');
